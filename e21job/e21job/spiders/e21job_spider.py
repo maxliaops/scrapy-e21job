@@ -13,7 +13,7 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor as sle
 from scrapy import log
 
 from e21job.items import *
-
+from e21job.misc.log import *
 
 class E21jobSpider(CrawlSpider):
     name = "e21job"
@@ -35,20 +35,21 @@ class E21jobSpider(CrawlSpider):
             query = 'tr:nth-child(%d)' %i
             #print query
             site = sel.css('table:nth-child(5)').css('table:nth-child(2)').css('table.black12').css(query)
-            item['name'] = site.css('a').xpath('text()').extract()[0]
+            item['name'] = site.css('a').xpath('text()').extract()
             item['school'] = site.css('td:nth-child(2)::text').extract()
             item['specialty'] = site.css('td:nth-child(3)::text').extract()
             item['education'] = site.css('td:nth-child(4)::text').extract()
             items.append(item)
             #print repr(item).decode("unicode-escape") + '\n'
 
-        #info('parsed ' + str(response))
+        info('parsed ' + str(response))
         #log.msg(str('parsed ' + str(response)), level=log.INFO)
         return items
 
 
     def _process_request(self, request):
-        #info('process ' + str(request))
-        log.msg(str('process ' + str(request)), level=log.INFO)
+        #print request
+        info('process ' + str(request))
+        # log.msg(str('process ' + str(request)), level=log.INFO)
         return request
 
