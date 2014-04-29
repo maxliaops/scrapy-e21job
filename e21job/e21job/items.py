@@ -7,6 +7,7 @@ from scrapy.item import Item, Field
 
 class GraduateItem(Item):
     name = Field()
+    detailLink = Field()
     school = Field()
     specialty = Field()
     education = Field()

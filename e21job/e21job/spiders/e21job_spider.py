@@ -35,10 +35,22 @@ class E21jobSpider(CrawlSpider):
             query = 'tr:nth-child(%d)' %i
             #print query
             site = sel.css('table:nth-child(5)').css('table:nth-child(2)').css('table.black12').css(query)
-            item['name'] = site.css('a').xpath('text()').extract()
-            item['school'] = site.css('td:nth-child(2)::text').extract()
-            item['specialty'] = site.css('td:nth-child(3)::text').extract()
-            item['education'] = site.css('td:nth-child(4)::text').extract()
+            array = site.css('a').xpath('text()').extract()
+            if len(array) == 1 :
+                item['name'] = array[0]
+            array = site.css('a').xpath('@href').extract()
+            if len(array) == 1 :
+                relative_url = array[0]
+                item['detailLink'] = urljoin_rfc(base_url, relative_url)
+            array = site.css('td:nth-child(2)::text').extract()
+            if len(array) == 1 :
+                item['school'] = array[0]
+            array = site.css('td:nth-child(3)::text').extract()
+            if len(array) == 1 :
+                item['specialty'] = array[0]
+            array = site.css('td:nth-child(4)::text').extract()
+            if len(array) == 1 :
+                item['education'] = array[0]
             items.append(item)
             #print repr(item).decode("unicode-escape") + '\n'
 
